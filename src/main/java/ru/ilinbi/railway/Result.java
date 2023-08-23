@@ -1,5 +1,6 @@
 package src.main.java.ru.ilinbi.railway;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -7,9 +8,13 @@ import java.util.function.UnaryOperator;
 
 public interface Result<TSuccess> {
     Boolean isSuccess();
+
     Boolean isError();
+
     TSuccess getValue();
+
     Exception getError();
+
     Boolean isEmpty();
 
     /**
@@ -21,7 +26,7 @@ public interface Result<TSuccess> {
     default Result<TSuccess> flatMap(Function<TSuccess, Result<TSuccess>> function) {
         try {
             return function.apply(getValue());
-        } catch (Exception e){
+        } catch (Exception e) {
             return onError(e);
         }
     }
@@ -77,6 +82,12 @@ public interface Result<TSuccess> {
      * Date : 23.08.2023
      */
     static <TSuccess> Result<TSuccess> of(final TSuccess argument) {
+        if(Objects.isNull(argument))
+            throw new IllegalArgumentException("Value must be not null!");
+        return onSuccess(argument);
+    }
+
+    static <TSuccess> Result<TSuccess> ofNullable(final TSuccess argument) {
         return onSuccess(argument);
     }
 
@@ -89,7 +100,7 @@ public interface Result<TSuccess> {
     default Result<TSuccess> or(UnaryOperator<TSuccess> mainFunction, UnaryOperator<TSuccess> fallBackFunction) {
         try {
             return onSuccess(mainFunction.apply(getValue()));
-        } catch (Exception e){
+        } catch (Exception e) {
             return onSuccess(fallBackFunction.apply(getValue()));
         }
     }
