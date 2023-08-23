@@ -1,8 +1,8 @@
-package src.main.java.ru.ilinbi.railway;
+package ru.ilinbi.railway;
 
 import java.util.Optional;
 
-public class Success<TSuccess> implements Result<TSuccess>{
+public class Success<TSuccess> implements ru.ilinbi.railway.Result<TSuccess>{
     private final TSuccess value;
 
     Success(TSuccess value) {

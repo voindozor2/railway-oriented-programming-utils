@@ -1,6 +1,6 @@
-package src.main.java.ru.ilinbi.railway;
+package ru.ilinbi.railway;
 
-public class Error<TSuccess> implements Result<TSuccess>{
+public class Error<TSuccess> implements ru.ilinbi.railway.Result<TSuccess> {
     private final Exception exception;
 
     Error(Exception exception) {

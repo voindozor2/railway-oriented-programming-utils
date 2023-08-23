@@ -1,4 +1,4 @@
-package src.main.java.ru.ilinbi.railway;
+package ru.ilinbi.railway;
 
 import java.util.Objects;
 import java.util.Optional;
