@@ -22,7 +22,7 @@ public interface Result<TSuccess> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    default Result<TSuccess> flatMap(Function<TSuccess, Result<TSuccess>> function) {
+    default <T> Result<T> flatMap(Function<TSuccess, Result<T>> function) {
         try {
             return function.apply(getValue());
         } catch (Exception e) {
@@ -37,7 +37,7 @@ public interface Result<TSuccess> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    default Result<TSuccess> map(UnaryOperator<TSuccess> function) {
+    default <T> Result<T> map(Function<TSuccess,T> function) {
         try {
             return onSuccess(function.apply(getValue()));
         } catch (Exception e) {
@@ -66,7 +66,7 @@ public interface Result<TSuccess> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    default Result<TSuccess> with(UnaryOperator<TSuccess> function) {
+    default <T> Result<T> with(Function<TSuccess,T> function) {
         try {
             return onSuccess(function.apply(getValue()));
         } catch (Exception e) {
@@ -96,7 +96,7 @@ public interface Result<TSuccess> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    default Result<TSuccess> or(UnaryOperator<TSuccess> mainFunction, UnaryOperator<TSuccess> fallBackFunction) {
+    default <T> Result<T> or(Function<TSuccess,T> mainFunction, Function<TSuccess,T> fallBackFunction) {
         try {
             return onSuccess(mainFunction.apply(getValue()));
         } catch (Exception e) {
