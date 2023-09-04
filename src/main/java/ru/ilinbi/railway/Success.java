@@ -2,10 +2,10 @@ package ru.ilinbi.railway;
 
 import java.util.Optional;
 
-public class Success<TSuccess,TError> implements Result<TSuccess,TError>{
-    private final TSuccess value;
+public class Success<S,E> implements Result<S,E>{
+    private final S value;
 
-    Success(TSuccess value) {
+    Success(S value) {
         this.value = value;
     }
 
@@ -20,12 +20,12 @@ public class Success<TSuccess,TError> implements Result<TSuccess,TError>{
     }
 
     @Override
-    public TSuccess getValue() {
+    public S getValue() {
         return value;
     }
 
     @Override
-    public TError getErrorValue() {
+    public E getErrorValue() {
         return null;
     }
 

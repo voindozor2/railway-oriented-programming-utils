@@ -1,9 +1,9 @@
 package ru.ilinbi.railway;
 
-public class Error<TSuccess,TError> implements Result<TSuccess,TError> {
-    private final TError errorValue;
+public class Error<S, E> implements Result<S, E> {
+    private final E errorValue;
 
-    Error(TError error) {
+    Error(E error) {
         this.errorValue = error;
     }
 
@@ -18,12 +18,12 @@ public class Error<TSuccess,TError> implements Result<TSuccess,TError> {
     }
 
     @Override
-    public TSuccess getValue() {
+    public S getValue() {
         return null;
     }
 
     @Override
-    public TError getErrorValue() {
+    public E getErrorValue() {
         return errorValue;
     }
 

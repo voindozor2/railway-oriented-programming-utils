@@ -4,14 +4,14 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public interface Result<TSuccess, TError> {
+public interface Result<S, E> {
     Boolean isSuccess();
 
     Boolean isError();
 
-    TSuccess getValue();
+    S getValue();
 
-    TError getErrorValue();
+    E getErrorValue();
 
     Boolean isEmpty();
 
@@ -22,15 +22,15 @@ public interface Result<TSuccess, TError> {
      * Date : 23.08.2023
      */
     @SuppressWarnings("unchecked")
-    default <T, E> Result<T, E> flatMap(Function<TSuccess, Result<T, E>> function) {
+    default <T, G> Result<T, G> flatMap(Function<S, Result<T, G>> function) {
         try {
             if (Boolean.TRUE.equals(isSuccess())) {
                 return function.apply(getValue());
             } else {
-                return (Result<T, E>) new Error<>(getErrorValue());
+                return (Result<T, G>) new Error<>(getErrorValue());
             }
         } catch (Exception e) {
-            return (Result<T, E>) new Error<>(e);
+            return (Result<T, G>) new Error<>(e);
         }
     }
 
@@ -41,15 +41,15 @@ public interface Result<TSuccess, TError> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    default <T,E> Result<T, E> map(Function<TSuccess, T> function) {
+    default <T, G> Result<T, G> map(Function<S, T> function) {
         try {
             if (Boolean.TRUE.equals(isSuccess())) {
                 return new Success<>(function.apply(getValue()));
             } else {
-                return (Result<T, E>) new Error<>(getErrorValue());
+                return (Result<T, G>) new Error<>(getErrorValue());
             }
         } catch (Exception e) {
-            return (Result<T, E>) new Error(e);
+            return (Result<T, G>) new Error<>(e);
         }
     }
 
@@ -59,7 +59,7 @@ public interface Result<TSuccess, TError> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    default Result<TSuccess, TError> task(Consumer<TSuccess> deadEndFunction) {
+    default Result<S, E> task(Consumer<S> deadEndFunction) {
         try {
             if (Boolean.TRUE.equals(isSuccess())) {
                 deadEndFunction.accept(getValue());
@@ -68,7 +68,7 @@ public interface Result<TSuccess, TError> {
                 return new Error<>(getErrorValue());
             }
         } catch (Exception e) {
-            return (Result<TSuccess, TError>) new Error(e);
+            return (Result<S, E>) new Error<>(e);
         }
     }
 
@@ -78,15 +78,15 @@ public interface Result<TSuccess, TError> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    default <T,E> Result<T, E> with(Function<TSuccess, T> function) {
+    default <T, G> Result<T, G> with(Function<S, T> function) {
         try {
             if (Boolean.TRUE.equals(isSuccess())) {
                 return new Success<>(function.apply(getValue()));
             } else {
-                return (Result<T, E>) new Error<>(getErrorValue());
+                return (Result<T, G>) new Error<>(getErrorValue());
             }
         } catch (Exception e) {
-            return (Result<T, E>) new Error(e);
+            return (Result<T, G>) new Error<>(e);
         }
     }
 
