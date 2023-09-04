@@ -1,10 +1,10 @@
 package ru.ilinbi.railway;
 
-public class Error<TSuccess> implements ru.ilinbi.railway.Result<TSuccess> {
-    private final Exception exception;
+public class Error<TSuccess,TError> implements ru.ilinbi.railway.Result<TSuccess,TError> {
+    private final TError errorValue;
 
-    Error(Exception exception) {
-        this.exception = exception;
+    Error(TError error) {
+        this.errorValue = error;
     }
 
     @Override
@@ -23,8 +23,8 @@ public class Error<TSuccess> implements ru.ilinbi.railway.Result<TSuccess> {
     }
 
     @Override
-    public Exception getError() {
-        return exception;
+    public TError getErrorValue() {
+        return errorValue;
     }
 
     @Override
