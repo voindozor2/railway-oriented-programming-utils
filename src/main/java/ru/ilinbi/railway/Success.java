@@ -2,7 +2,7 @@ package ru.ilinbi.railway;
 
 import java.util.Optional;
 
-public class Success<TSuccess> implements ru.ilinbi.railway.Result<TSuccess>{
+public class Success<TSuccess,TError> implements Result<TSuccess,TError>{
     private final TSuccess value;
 
     Success(TSuccess value) {
@@ -25,7 +25,7 @@ public class Success<TSuccess> implements ru.ilinbi.railway.Result<TSuccess>{
     }
 
     @Override
-    public Exception getError() {
+    public TError getErrorValue() {
         return null;
     }
 
