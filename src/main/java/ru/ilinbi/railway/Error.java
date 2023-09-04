@@ -1,6 +1,6 @@
 package ru.ilinbi.railway;
 
-public class Error<TSuccess,TError> implements ru.ilinbi.railway.Result<TSuccess,TError> {
+public class Error<TSuccess,TError> implements Result<TSuccess,TError> {
     private final TError errorValue;
 
     Error(TError error) {
