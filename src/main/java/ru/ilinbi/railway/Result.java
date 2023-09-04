@@ -3,16 +3,15 @@ package ru.ilinbi.railway;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.UnaryOperator;
 
-public interface Result<TSuccess> {
+public interface Result<TSuccess, TError> {
     Boolean isSuccess();
 
     Boolean isError();
 
     TSuccess getValue();
 
-    Exception getError();
+    TError getErrorValue();
 
     Boolean isEmpty();
 
@@ -22,11 +21,16 @@ public interface Result<TSuccess> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    default <T> Result<T> flatMap(Function<TSuccess, Result<T>> function) {
+    @SuppressWarnings("unchecked")
+    default <T, E> Result<T, E> flatMap(Function<TSuccess, Result<T, E>> function) {
         try {
-            return function.apply(getValue());
+            if (Boolean.TRUE.equals(isSuccess())) {
+                return function.apply(getValue());
+            } else {
+                return (Result<T, E>) new Error<>(getErrorValue());
+            }
         } catch (Exception e) {
-            return onError(e);
+            return (Result<T, E>) new Error<>(e);
         }
     }
 
@@ -37,11 +41,15 @@ public interface Result<TSuccess> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    default <T> Result<T> map(Function<TSuccess,T> function) {
+    default <T,E> Result<T, E> map(Function<TSuccess, T> function) {
         try {
-            return onSuccess(function.apply(getValue()));
+            if (Boolean.TRUE.equals(isSuccess())) {
+                return new Success<>(function.apply(getValue()));
+            } else {
+                return (Result<T, E>) new Error<>(getErrorValue());
+            }
         } catch (Exception e) {
-            return onError(e);
+            return (Result<T, E>) new Error(e);
         }
     }
 
@@ -51,12 +59,16 @@ public interface Result<TSuccess> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    default Result<TSuccess> task(Consumer<TSuccess> deadEndFunction) {
+    default Result<TSuccess, TError> task(Consumer<TSuccess> deadEndFunction) {
         try {
-            deadEndFunction.accept(getValue());
-            return onSuccess(getValue());
+            if (Boolean.TRUE.equals(isSuccess())) {
+                deadEndFunction.accept(getValue());
+                return new Success<>(getValue());
+            } else {
+                return new Error<>(getErrorValue());
+            }
         } catch (Exception e) {
-            return onError(e);
+            return (Result<TSuccess, TError>) new Error(e);
         }
     }
 
@@ -66,11 +78,15 @@ public interface Result<TSuccess> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    default <T> Result<T> with(Function<TSuccess,T> function) {
+    default <T,E> Result<T, E> with(Function<TSuccess, T> function) {
         try {
-            return onSuccess(function.apply(getValue()));
+            if (Boolean.TRUE.equals(isSuccess())) {
+                return new Success<>(function.apply(getValue()));
+            } else {
+                return (Result<T, E>) new Error<>(getErrorValue());
+            }
         } catch (Exception e) {
-            return onError(e);
+            return (Result<T, E>) new Error(e);
         }
     }
 
@@ -80,36 +96,13 @@ public interface Result<TSuccess> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    static <TSuccess> Result<TSuccess> of(final TSuccess argument) {
-        if(Objects.isNull(argument))
+    static <T, E> Result<T, E> of(final T argument) {
+        if (Objects.isNull(argument))
             throw new IllegalArgumentException("Value must be not null!");
-        return onSuccess(argument);
+        return new Success<>(argument);
     }
 
-    static <TSuccess> Result<TSuccess> ofNullable(final TSuccess argument) {
-        return onSuccess(argument);
-    }
-
-    /**
-     * @param mainFunction Принимается любые 2 двухдорожечные функции
-     * @return Если основная функция успешно выполняется - то выдается её результат. Если нет - то fallBackFunction
-     * Author : Ilin Boris
-     * Date : 23.08.2023
-     */
-    default <T> Result<T> or(Function<TSuccess,T> mainFunction, Function<TSuccess,T> fallBackFunction) {
-        try {
-            return onSuccess(mainFunction.apply(getValue()));
-        } catch (Exception e) {
-            return onSuccess(fallBackFunction.apply(getValue()));
-        }
-    }
-
-
-    static <TSuccess> Result<TSuccess> onSuccess(final TSuccess value) {
-        return new Success(value);
-    }
-
-    static <TSuccess> Result<TSuccess> onError(final Exception exception) {
-        return new Error(exception);
+    static <T, E> Result<T, E> ofNullable(final T argument) {
+        return new Success<>(argument);
     }
 }
