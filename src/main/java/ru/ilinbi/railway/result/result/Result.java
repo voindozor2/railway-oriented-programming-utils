@@ -69,6 +69,20 @@ public interface Result<S, E> {
         return new Success<>(argument);
     }
 
+    static <A, B, E> Result<Pair<A, B>, E> ofNullable(final A firstArgument, final B secondArgument) {
+        return new Success<>(new Pair<>(firstArgument, secondArgument));
+    }
+
+    static <A, B, C, E> Result<Triple<A, B, C>, E> ofNullable(final A firstArgument, final B secondArgument,
+                                                              final C thirdArgument) {
+        return new Success<>(new Triple<>(firstArgument, secondArgument, thirdArgument));
+    }
+
+    static <A, B, C, D, E> Result<Quad<A, B, C, D>, E> ofNullable(final A firstArgument, final B secondArgument,
+                                                                  final C thirdArgument, final D fourthArgument) {
+        return new Success<>(new Quad<>(firstArgument, secondArgument, thirdArgument, fourthArgument));
+    }
+
     Boolean isSuccess();
 
     Boolean isError();
