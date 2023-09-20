@@ -1,9 +1,9 @@
-package ru.ilinbi.railway;
+package ru.ilinbi.railway.result.result;
 
 public class Error<S, E> implements Result<S, E> {
     private final E errorValue;
 
-    Error(E error) {
+    public Error(E error) {
         this.errorValue = error;
     }
 

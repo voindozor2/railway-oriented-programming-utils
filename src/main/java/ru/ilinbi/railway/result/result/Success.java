@@ -1,11 +1,11 @@
-package ru.ilinbi.railway;
+package ru.ilinbi.railway.result.result;
 
 import java.util.Optional;
 
 public class Success<S,E> implements Result<S,E>{
     private final S value;
 
-    Success(S value) {
+    public Success(S value) {
         this.value = value;
     }
 
