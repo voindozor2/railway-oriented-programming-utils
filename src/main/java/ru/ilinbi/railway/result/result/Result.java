@@ -99,10 +99,10 @@ public interface Result<S, E> {
      * Author : Ilin Boris
      * Date : 23.08.2023
      */
-    default <T, G> Result<T, G> flatMap(Function<S, Result<T, G>> function) {
+    default <T, G> Result<T, G> flatMap(Function<Result<S, E>, Result<T, G>> function) {
         try {
             if (Boolean.TRUE.equals(isSuccess())) {
-                return function.apply(getValue());
+                return function.apply(this);
             } else {
                 return (Result<T, G>) new Error<>(getErrorValue());
             }
@@ -217,6 +217,21 @@ public interface Result<S, E> {
             }
         } catch (Exception e) {
             return (Result<T, G>) new Error<>(e);
+        }
+    }
+
+    /**
+     * @param firstFunction,secondFunction Принимается однодорожечная функция с исключениями c одинаковыми аргументами
+     * @return Выдается двухдорожечная функция без исключений
+     * Author : Ilin Boris
+     * Date : 23.08.2023
+     */
+    default <T, G> Result<T, G> either(Function<S, T> firstFunction, Function<S, T> secondFunction) {
+        var result = map(arg -> firstFunction.apply(getValue()));
+        if (Boolean.TRUE.equals(result.isSuccess())) {
+            return new Success<>(result.getValue());
+        } else {
+            return new Success<>(secondFunction.apply(getValue()));
         }
     }
 }
