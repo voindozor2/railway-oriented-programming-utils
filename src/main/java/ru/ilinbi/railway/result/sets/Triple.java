@@ -1,4 +1,4 @@
-package ru.ilinbi.railway.result.combinators;
+package ru.ilinbi.railway.result.sets;
 
 import ru.ilinbi.railway.result.result.Error;
 import ru.ilinbi.railway.result.result.Result;
@@ -7,24 +7,22 @@ import ru.ilinbi.railway.result.result.Success;
 import java.util.function.Function;
 
 @SuppressWarnings("unchecked")
-public class Quad<A, B, C, D> {
+public class Triple<A, B, C> {
     private final A first;
     private final B second;
     private final C third;
-    private final D fourth;
 
-    public Quad(A first, B second, C third, D fourth) {
+    public Triple(A first, B second, C third) {
         this.first = first;
         this.second = second;
         this.third = third;
-        this.fourth = fourth;
     }
 
-    public static <A, B, C, D> Quad<A, B, C, D> of(A first, B second, C third, D fourth) {
-        return new Quad<>(first, second, third, fourth);
+    public static <A, B, C> Triple<A, B, C> of(A first, B second, C third) {
+        return new Triple<>(first, second, third);
     }
 
-    public <T, E> Result<T, E> map(Function<Quad<A, B, C, D>, T> function) {
+    public <T, E> Result<T, E> map(Function<Triple<A, B, C>, T> function) {
         try {
             return new Success<>(function.apply(this));
         } catch (Exception e) {
@@ -32,7 +30,7 @@ public class Quad<A, B, C, D> {
         }
     }
 
-    public <T> T then(Function<Quad<A, B, C, D>, T> function) {
+    public <T> T then(Function<Triple<A, B, C>, T> function) {
         return function.apply(this);
     }
 
@@ -46,9 +44,5 @@ public class Quad<A, B, C, D> {
 
     public C getThird() {
         return third;
-    }
-
-    public D getFourth() {
-        return fourth;
     }
 }

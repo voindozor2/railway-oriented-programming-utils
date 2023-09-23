@@ -1,8 +1,8 @@
 package ru.ilinbi.railway.result.result;
 
-import ru.ilinbi.railway.result.combinators.Pair;
-import ru.ilinbi.railway.result.combinators.Quad;
-import ru.ilinbi.railway.result.combinators.Triple;
+import ru.ilinbi.railway.result.sets.Pair;
+import ru.ilinbi.railway.result.sets.Quad;
+import ru.ilinbi.railway.result.sets.Triple;
 
 import java.util.Objects;
 import java.util.function.Consumer;

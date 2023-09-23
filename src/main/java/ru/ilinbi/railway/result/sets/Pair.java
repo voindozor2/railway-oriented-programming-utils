@@ -1,4 +1,4 @@
-package ru.ilinbi.railway.result.combinators;
+package ru.ilinbi.railway.result.sets;
 
 import ru.ilinbi.railway.result.result.Error;
 import ru.ilinbi.railway.result.result.Result;
@@ -7,22 +7,20 @@ import ru.ilinbi.railway.result.result.Success;
 import java.util.function.Function;
 
 @SuppressWarnings("unchecked")
-public class Triple<A, B, C> {
+public class Pair<A, B> {
     private final A first;
     private final B second;
-    private final C third;
 
-    public Triple(A first, B second, C third) {
+    public Pair(A first, B second) {
         this.first = first;
         this.second = second;
-        this.third = third;
     }
 
-    public static <A, B, C> Triple<A, B, C> of(A first, B second, C third) {
-        return new Triple<>(first, second, third);
+    public static <A, B> Pair<A, B> of(A first, B second) {
+        return new Pair<>(first, second);
     }
 
-    public <T, E> Result<T, E> map(Function<Triple<A, B, C>, T> function) {
+    public <T, E> Result<T, E> map(Function<Pair<A, B>, T> function) {
         try {
             return new Success<>(function.apply(this));
         } catch (Exception e) {
@@ -30,7 +28,7 @@ public class Triple<A, B, C> {
         }
     }
 
-    public <T> T then(Function<Triple<A, B, C>, T> function) {
+    public <T> T then(Function<Pair<A, B>, T> function) {
         return function.apply(this);
     }
 
@@ -40,9 +38,5 @@ public class Triple<A, B, C> {
 
     public B getSecond() {
         return second;
-    }
-
-    public C getThird() {
-        return third;
     }
 }
