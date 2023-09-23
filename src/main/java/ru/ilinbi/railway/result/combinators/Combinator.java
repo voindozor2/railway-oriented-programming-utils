@@ -7,6 +7,8 @@ import ru.ilinbi.railway.result.sets.Quad;
 import ru.ilinbi.railway.result.sets.Triple;
 
 public class Combinator {
+    private Combinator() {
+    }
 
     /**
      * @param first,second Принимается любое значение Result
@@ -14,11 +16,11 @@ public class Combinator {
      * Author : Ilin Boris
      * Date : 23.09.2023
      */
-    public <A, B, E> Result<Pair<A, B>, E> combinePair(Result<A, E> first, Result<B, E> second) {
+    public static  <A, B, E> Result<Pair<A, B>, E> combinePair(Result<A, E> first, Result<B, E> second) {
         if (first.isSuccess() && second.isSuccess()) {
             return Result.of(Pair.of(first.getValue(), second.getValue()));
         } else {
-            return new Error<>(first.isError() ? first.getErrorValue() : second.getErrorValue());
+            return new Error<>(Boolean.TRUE.equals(first.isError()) ? first.getErrorValue() : second.getErrorValue());
         }
     }
 
@@ -28,13 +30,13 @@ public class Combinator {
      * Author : Ilin Boris
      * Date : 23.09.2023
      */
-    public <A, B, C, E> Result<Triple<A, B, C>, E> combineTriple(Result<A, E> first, Result<B, E> second, Result<C, E> third) {
+    public static <A, B, C, E> Result<Triple<A, B, C>, E> combineTriple(Result<A, E> first, Result<B, E> second, Result<C, E> third) {
         if (first.isSuccess() && second.isSuccess()) {
             return Result.of(Triple.of(first.getValue(), second.getValue(), third.getValue()));
         } else {
-            if (first.isError()) {
+            if (Boolean.TRUE.equals(first.isError())) {
                 return new Error<>(first.getErrorValue());
-            } else if (second.isError()) {
+            } else if (Boolean.TRUE.equals(second.isError())) {
                 return new Error<>(second.getErrorValue());
             } else {
                 return new Error<>(third.getErrorValue());
@@ -48,17 +50,17 @@ public class Combinator {
      * Author : Ilin Boris
      * Date : 23.09.2023
      */
-    public <A, B, C, D, E> Result<Quad<A, B, C, D>, E> combineQuad(Result<A, E> first, Result<B, E> second,
+    public static <A, B, C, D, E> Result<Quad<A, B, C, D>, E> combineQuad(Result<A, E> first, Result<B, E> second,
                                                                    Result<C, E> third, Result<D, E> fourth
     ) {
         if (first.isSuccess() && second.isSuccess()) {
             return Result.of(Quad.of(first.getValue(), second.getValue(), third.getValue(), fourth.getValue()));
         } else {
-            if (first.isError()) {
+            if (Boolean.TRUE.equals(first.isError())) {
                 return new Error<>(first.getErrorValue());
-            } else if (second.isError()) {
+            } else if (Boolean.TRUE.equals(second.isError())) {
                 return new Error<>(second.getErrorValue());
-            } else if (third.isError()) {
+            } else if (Boolean.TRUE.equals(third.isError())) {
                 return new Error<>(third.getErrorValue());
             } else {
                 return new Error<>(fourth.getErrorValue());
