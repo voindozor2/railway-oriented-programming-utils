@@ -20,9 +20,13 @@ public interface Result<S, E> {
      * Date : 23.08.2023
      */
     static <T, E> Result<T, E> of(final T argument) {
-        if (Objects.isNull(argument))
-            throw new IllegalArgumentException(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL);
-        return new Success<>(argument);
+        try {
+            if (Objects.isNull(argument))
+                throw new IllegalArgumentException(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL);
+            return new Success<>(argument);
+        } catch (Exception e) {
+            return (Result<T, E>) new Error<>(e);
+        }
     }
 
     /**
@@ -33,10 +37,14 @@ public interface Result<S, E> {
      */
     static <A, B, C, D, E> Result<Quad<A, B, C, D>, E> of(final A firstArgument, final B secondArgument,
                                                           final C thirdArgument, final D fourthArgument) {
-        if (Objects.isNull(firstArgument) || Objects.isNull(secondArgument)
-                || Objects.isNull(thirdArgument) || Objects.isNull(fourthArgument))
-            throw new IllegalArgumentException(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL);
-        return new Success<>(Quad.of(firstArgument, secondArgument, thirdArgument, fourthArgument));
+        try {
+            if (Objects.isNull(firstArgument) || Objects.isNull(secondArgument)
+                    || Objects.isNull(thirdArgument) || Objects.isNull(fourthArgument))
+                throw new IllegalArgumentException(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL);
+            return new Success<>(Quad.of(firstArgument, secondArgument, thirdArgument, fourthArgument));
+        } catch (Exception e) {
+            return new Error<>((E) e);
+        }
     }
 
     /**
@@ -47,10 +55,14 @@ public interface Result<S, E> {
      */
     static <A, B, C, E> Result<Triple<A, B, C>, E> of(final A firstArgument, final B secondArgument,
                                                       final C thirdArgument) {
-        if (Objects.isNull(firstArgument) || Objects.isNull(secondArgument)
-                || Objects.isNull(thirdArgument))
-            throw new IllegalArgumentException(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL);
-        return new Success<>(Triple.of(firstArgument, secondArgument, thirdArgument));
+        try {
+            if (Objects.isNull(firstArgument) || Objects.isNull(secondArgument)
+                    || Objects.isNull(thirdArgument))
+                throw new IllegalArgumentException(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL);
+            return new Success<>(Triple.of(firstArgument, secondArgument, thirdArgument));
+        } catch (Exception e) {
+            return new Error<>((E) e);
+        }
     }
 
     /**
@@ -60,27 +72,47 @@ public interface Result<S, E> {
      * Date : 23.08.2023
      */
     static <A, B, E> Result<Pair<A, B>, E> of(final A firstArgument, final B secondArgument) {
-        if (Objects.isNull(firstArgument) || Objects.isNull(secondArgument))
-            throw new IllegalArgumentException(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL);
-        return new Success<>(Pair.of(firstArgument, secondArgument));
+        try {
+            if (Objects.isNull(firstArgument) || Objects.isNull(secondArgument))
+                throw new IllegalArgumentException(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL);
+            return new Success<>(Pair.of(firstArgument, secondArgument));
+        } catch (Exception e) {
+            return new Error<>((E) e);
+        }
     }
 
     static <T, E> Result<T, E> ofNullable(final T argument) {
-        return new Success<>(argument);
+        try {
+            return new Success<>(argument);
+        } catch (Exception e) {
+            return new Error<>((E) e);
+        }
     }
 
     static <A, B, E> Result<Pair<A, B>, E> ofNullable(final A firstArgument, final B secondArgument) {
-        return new Success<>(new Pair<>(firstArgument, secondArgument));
+        try {
+            return new Success<>(new Pair<>(firstArgument, secondArgument));
+        } catch (Exception e) {
+            return new Error<>((E) e);
+        }
     }
 
     static <A, B, C, E> Result<Triple<A, B, C>, E> ofNullable(final A firstArgument, final B secondArgument,
                                                               final C thirdArgument) {
-        return new Success<>(new Triple<>(firstArgument, secondArgument, thirdArgument));
+        try {
+            return new Success<>(new Triple<>(firstArgument, secondArgument, thirdArgument));
+        } catch (Exception e) {
+            return new Error<>((E) e);
+        }
     }
 
     static <A, B, C, D, E> Result<Quad<A, B, C, D>, E> ofNullable(final A firstArgument, final B secondArgument,
                                                                   final C thirdArgument, final D fourthArgument) {
-        return new Success<>(new Quad<>(firstArgument, secondArgument, thirdArgument, fourthArgument));
+        try {
+            return new Success<>(new Quad<>(firstArgument, secondArgument, thirdArgument, fourthArgument));
+        } catch (Exception e) {
+            return new Error<>((E) e);
+        }
     }
 
     Boolean isSuccess();
