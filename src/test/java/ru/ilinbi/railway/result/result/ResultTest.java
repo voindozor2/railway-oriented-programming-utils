@@ -6,7 +6,7 @@ import ru.ilinbi.railway.result.sets.Quad;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ResultTest {
-    static final String CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL = "Value must be not null!";
+    static final String CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL = "java.lang.IllegalArgumentException: Value must be not null!";
 
     @Test
     void ofTest() {
@@ -16,10 +16,8 @@ class ResultTest {
 
     @Test
     void ofExceptionTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result<Integer, Object> of = Result.of(null);
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        Result<Integer, Object> result = Result.of(null);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
     @Test
@@ -33,43 +31,32 @@ class ResultTest {
 
     @Test
     void OfQuadExceptionFirstTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result.of(null, 2, 3, 4);
-            ;
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        var result = Result.of(null, 2, 3, 4);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
     @Test
     void OfQuadExceptionSecondTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result.of(1, null, 3, 4);
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        var result = Result.of(1, null, 3, 4);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
     @Test
     void OfQuadExceptionThirdTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result.of(1, 2, null, 4);
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        var result = Result.of(1, 2, null, 4);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
     @Test
     void OfQuadExceptionFourthTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result.of(1, 2, 3, null);
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        var result = Result.of(1, 2, 3, null);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
     @Test
     void OfQuadExceptionAllTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result.of(null, null, null, null);
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        var result = Result.of(null, null, null, null);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
 
@@ -83,34 +70,26 @@ class ResultTest {
 
     @Test
     void OfTripleFirstNullArgumentTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result.of(null, 2, 3);
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        var result = Result.of(null, 2, 3);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
     @Test
     void OfTripleSecondNullArgumentTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result.of(1, null, 3);
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        var result = Result.of(1, null, 3);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
     @Test
     void OfTripleThirdNullArgumentTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result.of(1, 2, null);
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        var result = Result.of(1, 2, null);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
     @Test
     void OfTripleAllNullArgumentTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result.of(null, null, null);
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        var result = Result.of(null, null, null);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
     @Test
@@ -122,26 +101,20 @@ class ResultTest {
 
     @Test
     void OfPairFirstArgumentNullTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result.of(null, 2);
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        var result = Result.of(null, 2);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
     @Test
     void OfPairSecondArgumentNullTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result.of(1, null);
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        var result = Result.of(1, null);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
     @Test
     void OfPairAllArgumentNullTest() {
-        Exception exception = assertThrows(Exception.class, () -> {
-            Result.of(null, null);
-        });
-        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, exception.getMessage());
+        var result = Result.of(null, null);
+        assertEquals(CONSTANT_MESSAGE_VALUE_MUST_BE_NOT_NULL, result.getErrorValue().toString());
     }
 
     @Test
